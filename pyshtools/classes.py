@@ -25,7 +25,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from _SHTOOLS import *
+from pyshtools._SHTOOLS import *
 
 #===============================================================================
 #=========== COEFFICIENT CLASSES ===============================================
@@ -44,10 +44,10 @@ class SHCoeffs(object):
     """
 
     def __init__(self):
-        print('use one of the following methods to initialize sh-coefficients:\n\n' +
+        print(('use one of the following methods to initialize sh-coefficients:\n\n' +
               '>> SHCoeffs.from_array(...)\n' +
               '>> SHCoeffs.from_random(...)\n' +
-              '>> SHCoeffs.from_file(...)')
+              '>> SHCoeffs.from_file(...)'))
 
     #---- factory methods:
     @classmethod
@@ -309,9 +309,9 @@ class SHGrid(object):
     >> SphericalGrid.from_file(...)
     """
     def __init__():
-        print('use one of the following methods to initialize the grid:\n\n' +
+        print(('use one of the following methods to initialize the grid:\n\n' +
               '>> SphericalGrid.from_array(...)\n' +
-              '>> SphericalGrid.from_file(...)')
+              '>> SphericalGrid.from_file(...)'))
 
     #---- constructors ----
     @classmethod
@@ -564,7 +564,7 @@ class SHSymmetricWindow(SHWindow):
         return coeffs
 
     def _info(self):
-        print('Cap window with {:d} tapers'.format(self.nwins))
+        print(('Cap window with {:d} tapers'.format(self.nwins)))
 
 class SHAsymmetricWindow(SHWindow):
     """
@@ -586,4 +586,4 @@ class SHAsymmetricWindow(SHWindow):
         return SHVectorToCilm(self.tapers[:,itaper],self.lmax)
 
     def _info(self):
-        print('Asymmetric window with {:d} tapers'.format(self.nwins))
+        print(('Asymmetric window with {:d} tapers'.format(self.nwins)))

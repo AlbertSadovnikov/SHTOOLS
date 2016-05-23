@@ -11,7 +11,7 @@ __version__ = '3.1'
 
 #---- some miniature python functions: ----
 def PlmIndex(l,m):
-    return (l*(l+1))/2 + m
+    return (l*(l+1))//2 + m
 
 def YilmIndexVector(l,m):
     return l**2 + (i-1)*l + m
@@ -22,9 +22,9 @@ def load_documentation():
     Fills the modules __doc__ strings with a useful documentation that was
     generated at compile time
     """
-
+    import collections
     import os
-    from . import _SHTOOLS
+    import pyshtools._SHTOOLS
 
     # bind python functions to SHTOOLS
     _SHTOOLS.PlmIndex = PlmIndex
@@ -32,8 +32,8 @@ def load_documentation():
 
     print('Loading SHTOOLS documentation')
     pydocfolder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'doc'))
-    for name, func in _SHTOOLS.__dict__.items():
-        if callable(func):
+    for name, func in list(_SHTOOLS.__dict__.items()):
+        if isinstance(func, collections.Callable):
             try:
                 path = os.path.join(pydocfolder, name.lower() + '.doc')
 
@@ -49,12 +49,12 @@ def load_documentation():
 load_documentation()
 
 # import planetary constants into module namespace
-from . import _constant
+import pyshtools._constant
 constant = _constant.planetsconstants
 
 # import all functions into module namespace
-from ._SHTOOLS import *
+import pyshtools._SHTOOLS
 
 # import class interface into namespace
-from .classes import SHCoeffs, SHGrid, SHWindow
+from pyshtools.classes import *
 

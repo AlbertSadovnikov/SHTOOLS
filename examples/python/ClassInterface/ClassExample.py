@@ -3,8 +3,8 @@
 This script tests the python class interface
 """
 
-from __future__ import division
-from __future__ import print_function
+
+
 
 # standard imports:
 import os

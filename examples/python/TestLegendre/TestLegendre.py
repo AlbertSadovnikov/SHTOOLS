@@ -37,7 +37,7 @@ def main():
 
 
 def test_legendre(lmax, normalization):
-    print 'testing Pl{0} and Pl{0}_d1...'.format(normalization)
+    print('testing Pl{0} and Pl{0}_d1...'.format(normalization))
     #--- import function from shtools ---
     if normalization == '':
         Pl = shtools.PLegendre
@@ -80,7 +80,7 @@ def test_legendre(lmax, normalization):
 
 
 def test_associatedlegendre(lmax, mplot, normalization):
-    print 'testing Plm{0} and Plm{0}_d1...'.format(normalization)
+    print('testing Plm{0} and Plm{0}_d1...'.format(normalization))
     #--- import function from shtools ---
     if normalization == '':
         Plm = shtools.PLegendreA

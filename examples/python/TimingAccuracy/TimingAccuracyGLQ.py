@@ -35,14 +35,14 @@ def TimingAccuracyGLQ():
     mask[1, :, 0] = False
 
     #---- create Gaussian powerlaw coefficients ----
-    print 'creating {:d} random coefficients'.format(2 * (maxdeg + 1) * (maxdeg + 1))
+    print('creating {:d} random coefficients'.format(2 * (maxdeg + 1) * (maxdeg + 1)))
     random_numbers = np.random.normal(loc=0., scale=1., size=2 * (maxdeg + 1) * (maxdeg + 1))
     cilm = random_numbers.reshape(2, maxdeg + 1, maxdeg + 1)
     cilm[:, 1:, :] *= np.sqrt((ls[1:]**beta) / (2. * ls[1:] + 1.))[None, :, None]
 
     #---- time spherical harmonics transform for lmax set to increasing powers of 2 ----
     lmax = 2
-    print 'lmax    maxerror    rms         tprecompute    tinverse    tforward'
+    print('lmax    maxerror    rms         tprecompute    tinverse    tforward')
     while lmax <= maxdeg:
         # trim coefficients to lmax
         cilm_trim = cilm[:, :lmax + 1, :lmax + 1]
@@ -71,8 +71,8 @@ def TimingAccuracyGLQ():
         maxerr = err.max()
         rmserr = np.mean(err**2)
 
-        print '{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s       {:1.1e}s    {:1.1e}s'.\
-            format(lmax, maxerr, rmserr, tprecompute, tinverse, tforward)
+        print('{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s       {:1.1e}s    {:1.1e}s'.\
+            format(lmax, maxerr, rmserr, tprecompute, tinverse, tforward))
         lmax = lmax * 2
 
 #==== EXECUTE SCRIPT ====
