@@ -3,7 +3,7 @@
 #	INSTRUCTIONS
 #
 #	The normal user should only have to use the following commands
-#	
+#
 #		make, make all		: install both the fortran and python components
 #		make fortran		: install the fortan components
 #		make fortran-mp		: install the fortan OpenMP components
@@ -23,7 +23,7 @@
 #
 #	This Makefile accepts the following optional arguments that can be passed
 #	using the syntax : make F95="name of f95 compile"
-#	
+#
 #		F95			: Name and path of the fortran-95 compiler
 #		F95FLAGS	: Fortran-95 compiler flags
 #		OPENMPFLAGS	: Fortran-95 OpenMP compiler flags
@@ -53,16 +53,16 @@
 #		an underscore appended to them in the source files in order to 
 #		use FFTW and LAPACK libraries with conflicting underscore 
 #		conventions.
-#	
+#
 #	make fortran-mp
 #		Compile only the fortran 95 component of the archive with OpenMP support.
-#	
+#
 #	make fortran2-mp
 #		Variant of make fortran-mp following the same rules as make fortran2.
-#	
+#
 #	make fortran3-mp
 #		Variant of make fortran-mp following the same rules as make fortran3.
-#	
+#
 #	make install-fortran
 #		Install only fortram 95 component of SHTOOLS.
 #
@@ -110,13 +110,13 @@ LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
 F95 = gfortran
-F2PY = f2py
-PYTHON = python
+F2PY = f2py3
+PYTHON = python3.5
 
 SYSLIBPATH = /usr/local/lib
 
 FFTW = -L$(SYSLIBPATH) -lfftw3
-LAPACK = -llapack 
+LAPACK = -llapack
 BLAS = -lblas
 
 SHELL = /bin/sh
@@ -133,7 +133,7 @@ LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
 SYSMODPATH = /usr/local/include/shtools
-SYSPYPATH = /usr/local/lib/python2.7/site-packages
+SYSPYPATH = /usr/local/lib/python3.5/site-packages
 SYSSHAREPATH =/usr/local/share
 SYSDOCPATH = /usr/local/share/doc
 
@@ -189,13 +189,13 @@ all:
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _SHTOOLS.so pyshtools/.
-	mv _constant.so pyshtools/.
+	mv _SHTOOLS*.so pyshtools/.
+	mv _constant*.so pyshtools/.
 	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
+	$(PYTHON) ./pyshtools/make_docs.py .
 	@echo
 	@echo MAKE OF PYTHON COMPONENT SUCCESSFUL!
-	@echo 
+	@echo
 	@echo -----------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
@@ -218,10 +218,10 @@ all2:
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _SHTOOLS.so pyshtools/.
-	mv _constant.so pyshtools/.
+	mv _SHTOOLS*.so pyshtools/.
+	mv _constant*.so pyshtools/.
 	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
+	$(PYTHON) ./pyshtools/make_docs.py .
 	@echo
 	@echo MAKE OF PYTHON COMPONENT SUCCESSFUL!
 	@echo
@@ -236,24 +236,24 @@ all2:
 	@echo sys.path.append\(\'$(PYPATH)\'\)
 	@echo import pyshtools as shtools
 	@echo -------------------------------------------------------------------------------------------
-	@echo	
-	
+	@echo
+
 all3:
 	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
 	@echo
 	@echo MAKE OF FORTRAN COMPONENT SUCCESSFUL!
-	@echo 
+	@echo
 	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _SHTOOLS.so pyshtools/.
-	mv _constant.so pyshtools/.
+	mv _SHTOOLS*.so pyshtools/.
+	mv _constant*.so pyshtools/.
 	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
+	$(PYTHON) ./pyshtools/make_docs.py .
 	@echo
 	@echo MAKE OF PYTHON COMPONENT SUCCESSFUL!
-	@echo 
+	@echo
 	@echo ---------------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
@@ -337,17 +337,17 @@ fortran3-mp:
 	@echo
 	@echo $(F95) $(MODFLAG) $(F95FLAGS) $(OPENMPFLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo ---------------------------------------------------------------------------------------------------
-	@echo 
+	@echo
 
 python:
 	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _SHTOOLS.so pyshtools/.
-	mv _constant.so pyshtools/.
+	mv _SHTOOLS*.so pyshtools/.
+	mv _constant*.so pyshtools/.
 	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
+	$(PYTHON) ./pyshtools/make_docs.py .
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
@@ -358,7 +358,7 @@ python:
 	@echo sys.path.append\(\'$(PYPATH)\'\)
 	@echo import pyshtools as shtools
 	@echo ---------------------------------------------------------------------------------------------------
-	@echo 
+	@echo
 
 install:
 	-rm -r $(SYSMODPATH)/fftw3.mod
@@ -437,9 +437,9 @@ install-fortran:
 	@echo
 	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo ---------------------------------------------------------------------------------------------------
-	@echo 
+	@echo
 
-doc: 
+doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
 	@$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
 	@echo DOCUMENTATION SUCCESSFULLY CREATED

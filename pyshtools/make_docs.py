@@ -13,6 +13,7 @@ import textwrap
 import string
 import _SHTOOLS
 import _constant
+import collections
 
 
 def main():
@@ -20,12 +21,12 @@ def main():
     libfolder = os.path.abspath(sys.argv[1])
     mddocfolder = os.path.join(libfolder, 'src/pydoc')
     pydocfolder = os.path.join(libfolder, 'pyshtools/doc')
-    print '---- searching documentation in folder: {} ----'.format(mddocfolder)
+    print('---- searching documentation in folder: {} ----'.format(mddocfolder))
 
 
     #---- loop through the f2py _SHTOOLS functions and make docstrings ----
-    for name, func in _SHTOOLS.__dict__.items():
-        if callable(func):
+    for name, func in list(_SHTOOLS.__dict__.items()):
+        if isinstance(func, collections.Callable):
             try:
                 #---- process and load documentation
                 # read md file documentation:
@@ -38,8 +39,8 @@ def main():
                     pydocfile.write(docstring)
                     pydocfile.close()
 
-            except IOError, msg:
-                print msg
+            except IOError as msg:
+                print(msg)
 
     #---- loop through functions that are defined in python ----
     pyfunctions = ['PlmIndex','YilmIndexVector']
@@ -55,11 +56,11 @@ def main():
             pydocfile.write(docstring)
             pydocfile.close()
 
-        except IOError, msg:
-            print msg
+        except IOError as msg:
+            print(msg)
 
     #---- loop through the f2py constants and make docstrings ----
-    for name, value in _constant.planetsconstants.__dict__.items():
+    for name, value in list(_constant.planetsconstants.__dict__.items()):
         try:
             #---- read md file documentation:
             fname_mddoc = os.path.join(mddocfolder, 'constant_' + name.lower() + '.md')
@@ -71,8 +72,8 @@ def main():
             pydocfile.write(docstring)
             pydocfile.close()
 
-        except IOError, msg:
-            print msg
+        except IOError as msg:
+            print(msg)
 
 #===== PROCESS MD DOCUMENTATION FILE ====
 def process_mddoc(fname_mddoc):
@@ -93,7 +94,7 @@ def process_mddoc(fname_mddoc):
     match = retail.search(mdstring)
     if match != None:
         #    mdstring = re.sub(match.group(0),'',mdstring) doesn't work. don't know why
-        mdstring = string.replace(mdstring, match.group(0), '')
+        mdstring = mdstring.replace(match.group(0), '')
 
     match = reh1.search(mdstring)
     while match != None:
@@ -113,12 +114,12 @@ def process_mddoc(fname_mddoc):
     match = recode.search(mdstring)
     while match != None:
         #    mdstring = re.sub(match.group(0),match.group(1),mdstring) doesn't work. don't know why
-        mdstring = string.replace(mdstring, match.group(0), match.group(1))
+        mdstring = mdstring.replace(match.group(0), match.group(1))
         match = recode.search(mdstring)
 
     match = restaresc.search(mdstring)
     while match != None:
-        mdstring = string.replace(mdstring, match.group(0), '*')
+        mdstring = mdstring.replace(match.group(0), '*')
         match = recode.search(mdstring)
 
     #---- combine into docstring ----
@@ -153,7 +154,7 @@ def process_f2pydoc(f2pydoc):
     elif len(docparts) == 3:
         doc_has_optionals = False
     else:
-        print '-- uninterpretable f2py documentation --'
+        print('-- uninterpretable f2py documentation --')
         return f2pydoc
 
     #---- replace arguments with _d suffix with empty string in function signature (remove them):
