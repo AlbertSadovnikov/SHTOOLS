@@ -17,9 +17,11 @@ import pyshtools as shtools
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
+
 mpl.rcParams.update(style_shtools)
 
-#==== MAIN FUNCTION ====
+
+# ==== MAIN FUNCTION ====
 
 
 def main():
@@ -28,7 +30,7 @@ def main():
 
 
 def test_ComplexSpectralAnalysis():
-    #---- input parameters ----
+    # ---- input parameters ----
     lmax = 5
     ls = np.arange(lmax + 1)
     mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
@@ -40,8 +42,8 @@ def test_ComplexSpectralAnalysis():
 
     print('\n---- testing SHPower/DensityLC, SHPowerSpectrum/DensityC ----')
     print('generating normal distributed complex coefficients with variance 1...')
-    coeffs1 = np.random.normal( loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1) ) + \
-        1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
+    coeffs1 = np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1)) + \
+              1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
     coeffs1 = coeffs1.reshape(2, lmax + 1, lmax + 1)
     coeffs1[np.invert(mask)] = 0.
 
@@ -57,8 +59,8 @@ def test_ComplexSpectralAnalysis():
 
     print('\n---- testing SHCrossPower/DensityLC, SHCrossCrossPowerSpectrum/DensityC ----')
     print('generating two sets of normal distributed complex coefficients with variance 1...')
-    coeffs2 = np.random.normal( loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1) ) + \
-        1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
+    coeffs2 = np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1)) + \
+              1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
     coeffs2 = coeffs2.reshape(2, lmax + 1, lmax + 1)
     coeffs2[np.invert(mask)] = 0.
 
@@ -72,29 +74,30 @@ def test_ComplexSpectralAnalysis():
     print('tot cpower computed with SHCrossPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1))))
     print('tot cpower computed with SHCrossPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1))))
 
-#==== PLOT POWER SPECTRA ====
+
+# ==== PLOT POWER SPECTRA ====
 
 
 def example():
     """
     example that plots the power spectrum of Mars topography data
     """
-    #--- input data filename ---
+    # --- input data filename ---
     infile = '../../ExampleDataFiles/MarsTopo719.shape'
     coeffs, lmax = shtools.SHRead(infile, 719)
     lmax = coeffs.shape[1] - 1
 
-    #--- plot grid ---
+    # --- plot grid ---
     grid = shtools.MakeGridDH(coeffs, lmax, csphase=-1)
     fig_map = plt.figure()
     plt.imshow(grid)
 
-    #---- compute spectrum ----
+    # ---- compute spectrum ----
     ls = np.arange(lmax + 1)
     pspectrum = shtools.SHPowerSpectrum(coeffs)
     pdensity = shtools.SHPowerSpectrumDensity(coeffs)
 
-    #---- plot spectrum ----
+    # ---- plot spectrum ----
     fig_spectrum, ax = plt.subplots(1, 1)
     ax.set_xscale('log')
     ax.set_yscale('log')
@@ -112,6 +115,7 @@ def example():
 
     # plt.show()
 
-#==== EXECUTE SCRIPT ====
+
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()
