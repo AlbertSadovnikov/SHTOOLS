@@ -139,7 +139,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     else if (size(w) < lmax+1) then
         print*, "Error --- SHExpandGLQC"
         print*, "W must be dimensioned as (LMAX+1) where LMAX is ", lmax
-        print*, "Input array is dimensioned as ", size(w)
+        print*, "Input array is dimensioned as ", size(w(:))
         stop
         
     end if
@@ -160,7 +160,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
         if (size(zero) < lmax+1) then
             print*, "Error --- SHExpandGLQC"
             print*, "ZERO must be dimensioned as (LMAX+1) where LMAX is ", lmax
-            print*, "Input array is dimensioned ", size(zero)
+            print*, "Input array is dimensioned ", size(zero(:))
             stop
             
         end if
